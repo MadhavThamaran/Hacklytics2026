@@ -36,55 +36,105 @@ export default function ChatCard() {
     }
   }
 
+  const promptChips = [
+    "Left knee pain after runs",
+    "Shin splints when increasing mileage",
+    "Achilles tightness in the morning"
+  ];
+
+  const handleChipClick = (chip: string) => {
+    setInput(chip);
+  };
+
   return (
-    <div className="card">
-      <div className="row" style={{ justifyContent: "space-between" }}>
-        <div>
-          <h2 className="h1">Pain-to-Exercises Coach</h2>
-          <p className="sub">Chatbot (mock now). Later: RAG via Actian VectorAI DB.</p>
+    <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur shadow-xl p-6">
+      {/* Card Header */}
+      <div className="mb-6">
+        <div className="flex items-center gap-3 mb-2">
+          <span className="text-2xl">💬</span>
+          <h2 className="text-xl font-semibold">Pain-to-Exercises Coach</h2>
         </div>
-        <span className="badge">MVP Skeleton</span>
+        <div className="h-1 w-32 bg-gradient-to-r from-emerald-400/60 to-amber-400/60 rounded-full" />
       </div>
 
-      <div
-        style={{
-          marginTop: 10,
-          marginBottom: 10,
-          padding: "10px 12px",
-          borderRadius: 8,
-          border: "1px solid #f0c36d",
-          background: "#fff7e6",
-          color: "#7a4b00",
-          fontSize: 14
-        }}
-      >
-        <strong>Not medical advice:</strong> This coach provides general running exercise guidance only.
+      {/* Disclaimer Banner */}
+      <div className="rounded-xl bg-amber-500/10 border border-amber-400/20 text-amber-100 p-4 mb-6 text-sm">
+        <strong>Not medical advice!:</strong> This coach provides general running exercise guidance only.
         If pain is severe, sharp, worsening, or persistent, please see a qualified clinician.
       </div>
 
-      <div className="chat">
-        {msgs.map((m, i) => (
-          <p key={i} className="msg">
-            <b>{m.role === "user" ? "You" : "Coach"}</b>
-            {m.text}
-          </p>
+      {/* Prompt Chips */}
+      <div className="flex flex-wrap gap-2 mb-6">
+        {promptChips.map((chip, idx) => (
+          <button
+            key={idx}
+            onClick={() => handleChipClick(chip)}
+            className="rounded-full bg-white/5 border border-white/10 hover:bg-white/10 text-sm px-3 py-1.5 text-zinc-200 transition cursor-pointer"
+          >
+            {chip}
+          </button>
         ))}
       </div>
 
-      <div className="row" style={{ marginTop: 10 }}>
+      {/* Chat Window */}
+      <div className="h-96 overflow-y-auto rounded-xl border border-white/10 bg-black/20 p-4 mb-4 space-y-4">
+        {msgs.length === 0 ? (
+          <p className="text-zinc-500 text-sm">Start chatting to get personalized advice...</p>
+        ) : (
+          msgs.map((m, i) => (
+            <div
+              key={i}
+              className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}
+            >
+              <div
+                className={`max-w-xs rounded-lg px-4 py-3 text-sm border ${
+                  m.role === "user"
+                    ? "bg-emerald-500/20 border-emerald-400/20 text-emerald-100"
+                    : "bg-white/5 border-white/10 text-zinc-200"
+                }`}
+              >
+                <p className="whitespace-pre-wrap leading-relaxed">{m.text}</p>
+              </div>
+            </div>
+          ))
+        )}
+        {loading && (
+          <div className="flex justify-start">
+            <div className="bg-white/5 border border-white/10 text-zinc-400 rounded-lg px-4 py-3 text-sm">
+              Coach is typing...
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Input Row */}
+      <div className="flex gap-3">
         <input
-          className="input"
-          placeholder='e.g., "My left shin hurts after runs. Warm-up ideas?"'
+          className="flex-1 rounded-xl bg-black/30 border border-white/10 px-4 py-3 placeholder:text-zinc-500 text-zinc-100 focus:outline-none focus:border-white/20 transition"
+          placeholder="Describe your pain..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => { if (e.key === "Enter") onSend(); }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+              e.preventDefault();
+              onSend();
+            }
+          }}
         />
-        <button className="btn" disabled={loading} onClick={onSend}>
+        <button
+          className="rounded-xl bg-zinc-100 text-zinc-900 px-4 py-3 font-medium hover:bg-white transition disabled:opacity-50"
+          disabled={loading}
+          onClick={onSend}
+        >
           {loading ? "..." : "Send"}
         </button>
       </div>
 
-      {error && <p className="small" style={{ color: "crimson", marginTop: 10 }}>{error}</p>}
+      {error && (
+        <div className="rounded-xl bg-red-500/10 border border-red-400/20 text-red-100 p-3 mt-4 text-sm">
+          {error}
+        </div>
+      )}
     </div>
   );
 }
