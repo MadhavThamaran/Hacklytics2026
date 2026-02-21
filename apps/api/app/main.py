@@ -1,5 +1,7 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+
 try:
     from .rag.coach import run_rag_chat
 except Exception:
@@ -13,14 +15,13 @@ from .storage import create_job, save_upload, set_job_status, get_job
 
 import sys
 import os
-import uuid
 import subprocess
-import tempfile
 
 try:
     from . import databricks_client
 except Exception:
     databricks_client = None
+
 
 app = FastAPI(title="Running Coach API", version="0.1.0")
 
@@ -32,6 +33,26 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Serve local storage files (videos / overlays) at /static/*
+# Maps apps/api/storage/... -> /static/...
+_STORAGE_DIR = os.path.join(os.path.dirname(__file__), "..", "storage")
+app.mount("/static", StaticFiles(directory=_STORAGE_DIR), name="static")
+
+
+def _to_static_url(path: str | None) -> str | None:
+    """Convert local filesystem storage path to browser-friendly /static URL."""
+    if not path:
+        return None
+
+    norm = str(path).replace("\\", "/")
+    marker = "/storage/"
+    idx = norm.lower().find(marker)
+    if idx == -1:
+        return path  # fallback if path is already URL-like or unexpected
+
+    rel = norm[idx + len(marker):]
+    return f"/static/{rel}"
 
 
 @app.get("/health", response_model=HealthResponse)
@@ -47,7 +68,7 @@ async def upload_video(file: UploadFile = File(...)):
     content = await file.read()
     if len(content) == 0:
         raise HTTPException(status_code=400, detail="Empty file")
-    
+
     # Create local job entry first (this is the source of truth for job_id)
     job_id = create_job(filename="pending")
 
@@ -57,14 +78,15 @@ async def upload_video(file: UploadFile = File(...)):
 
     # Update local job with real filename/path
     set_job_status(job_id, "queued", {"filename": save_path})
-    
+
     # Insert into Databricks SQL (metadata only; video stored locally)
     try:
-        q = (
-            "INSERT INTO uploads (job_id, created_at, video_path, status, overlay_path, rubric_version, error) "
-            f"VALUES ('{job_id}', current_timestamp(), '{save_path}', 'queued', NULL, NULL, NULL)"
-        )
-        databricks_client.execute_sql(q)
+        if databricks_client is not None:
+            q = (
+                "INSERT INTO uploads (job_id, created_at, video_path, status, overlay_path, rubric_version, error) "
+                f"VALUES ('{job_id}', current_timestamp(), '{save_path}', 'queued', NULL, NULL, NULL)"
+            )
+            databricks_client.execute_sql(q)
     except Exception:
         # If Databricks fails, continue with local storage only
         pass
@@ -88,7 +110,10 @@ async def upload_video(file: UploadFile = File(...)):
         # If spawn fails, write status error locally and to Databricks
         set_job_status(job_id, "error", {"error": "worker spawn failed"})
         try:
-            databricks_client.execute_sql(f"UPDATE uploads SET status='error', error='worker spawn failed' WHERE job_id='{job_id}'")
+            if databricks_client is not None:
+                databricks_client.execute_sql(
+                    f"UPDATE uploads SET status='error', error='worker spawn failed' WHERE job_id='{job_id}'"
+                )
         except Exception:
             pass
 
@@ -116,6 +141,7 @@ def results(job_id: str):
         overall_score = job.get("overall_score")
         tips = job.get("tips", []) or []
         overlay_path = job.get("overlay_path")
+        overlay_url = _to_static_url(overlay_path)
         metrics_payload = job.get("metrics", {}) or {}
 
         display_metric_map = [
@@ -161,7 +187,7 @@ def results(job_id: str):
             overall_score=int(overall_score) if overall_score is not None else None,
             metrics=metrics,
             tips=tips,
-            overlay_path=overlay_path,
+            overlay_path=overlay_url,
         )
 
     # 2) If not in local storage, try Databricks (fallback)
@@ -200,13 +226,14 @@ def results(job_id: str):
                     metrics_out = []
 
                 tips = list(tips_arr) if tips_arr else []
+                overlay_url = _to_static_url(overlay_path)
                 return ScoreResult(
                     job_id=job_id,
                     status="done",
                     overall_score=overall_score,
                     metrics=metrics_out,
                     tips=tips,
-                    overlay_path=overlay_path,
+                    overlay_path=overlay_url,
                 )
     except Exception:
         pass

@@ -4,6 +4,8 @@ import React from "react";
 import { uploadVideo, fetchResults } from "@/lib/api";
 import type { ScoreResult } from "@/lib/types";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
+
 export default function UploadCard() {
   const [file, setFile] = React.useState<File | null>(null);
   const [jobId, setJobId] = React.useState<string | null>(null);
@@ -89,11 +91,17 @@ export default function UploadCard() {
       formatted = value.toFixed(4);
     }
 
-    // Optional display-friendly unit tweak
     const prettyUnit = unit === "norm" ? "" : unit ?? "";
-
     return prettyUnit ? `${formatted} ${prettyUnit}` : formatted;
   }
+
+  function overlayUrl(path?: string | null) {
+    if (!path) return null;
+    if (path.startsWith("http://") || path.startsWith("https://")) return path;
+    return `${API_URL}${path}`;
+  }
+
+  const videoUrl = overlayUrl(result?.overlay_path);
 
   return (
     <div className="card">
@@ -195,6 +203,27 @@ export default function UploadCard() {
               </ul>
             )}
           </div>
+
+          {videoUrl && result.status === "done" && (
+            <>
+              <hr className="hr" />
+              <div>
+                <div className="small" style={{ marginBottom: 8 }}>
+                  Pose Overlay Video (debug/demo)
+                </div>
+                <video
+                  key={videoUrl}
+                  controls
+                  preload="metadata"
+                  style={{ width: "100%", borderRadius: 12, background: "#000" }}
+                  src={videoUrl}
+                />
+                <p className="small" style={{ marginTop: 6 }}>
+                  Overlay currently mirrors the uploaded clip. Next step: draw pose landmarks on frames.
+                </p>
+              </div>
+            </>
+          )}
         </div>
       )}
     </div>
