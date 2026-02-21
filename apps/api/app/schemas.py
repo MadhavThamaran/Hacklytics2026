@@ -8,7 +8,6 @@ class HealthResponse(BaseModel):
 
 class UploadResponse(BaseModel):
     job_id: str
-    status: Literal["queued", "processing", "done", "error"]
 
 
 class MetricScore(BaseModel):
@@ -24,7 +23,7 @@ class ScoreResult(BaseModel):
     overall_score: Optional[int] = None
     metrics: List[MetricScore] = []
     tips: List[str] = []
-    overlay_url: Optional[str] = None
+    overlay_path: Optional[str] = None
     error: Optional[str] = None
 
 

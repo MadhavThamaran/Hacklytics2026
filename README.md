@@ -50,3 +50,45 @@ rm -r -force .next
 npm cache clean --force
 npm install
 npm run dev
+
+## Databricks setup (optional)
+
+This project optionally integrates with Databricks SQL for metadata storage. Videos and overlay files are **always stored locally** in `apps/api/storage/uploads/`. Databricks stores:
+- Job status (`uploads` table)
+- Metrics and scores (`video_results` table)
+
+To enable Databricks integration:
+
+1. Create a Databricks Free account and start a SQL Warehouse (Databricks SQL).
+2. Generate a Personal Access Token (PAT) from User Settings → Access Tokens.
+3. In Databricks SQL, copy the HTTP path for your SQL Warehouse.
+4. Create a local `.env` file in the repo root (or set environment variables):
+
+```
+DATABRICKS_HOST=https://<your-workspace-host>
+DATABRICKS_TOKEN=<your-pat-token>
+DATABRICKS_HTTP_PATH=<sql-warehouse-http-path>
+```
+
+**Do NOT commit the `.env` file** (it's in `.gitignore`).
+
+5. Run the setup SQL once to create Delta tables. In Databricks SQL editor, run all commands from `databricks/notebooks/setup_tables.sql`.
+
+6. Install API requirements:
+
+```powershell
+cd apps/api
+.\.venv\Scripts\activate
+python -m pip install -r requirements.txt
+```
+
+7. Start the API. When you upload a video:
+   - Video is saved locally to `appstructions/api/storage/uploads/{job_id}.mp4`
+   - Job metadata is inserted into Databricks `uploads` table
+   - Local worker processes the video and writes results locally
+   - Metrics and scores are inserted into Databricks `video_results` table
+
+Notes:
+- If Databricks env vars are not set, the app works with local storage only (jobs.json).
+- If Databricks SQL fails at any point, the app continues with local storage as fallback.
+- No secrets are committed; keep `.env` local or set in your deployment environment.

@@ -1,6 +1,5 @@
 export type UploadResponse = {
   job_id: string;
-  status: "queued" | "processing" | "done" | "error";
 };
 
 export type MetricScore = {
@@ -16,7 +15,7 @@ export type ScoreResult = {
   overall_score?: number | null;
   metrics: MetricScore[];
   tips: string[];
-  overlay_url?: string | null;
+  overlay_path?: string | null;
   error?: string | null;
 };
 
