@@ -1,0 +1,254 @@
+[
+  {
+    "id": "shin_tibialis_raises",
+    "title": "Tibialis Raises (against wall)",
+    "body_area": "shin",
+    "goal": "strength",
+    "when": "off-day",
+    "instructions": [
+      "Stand with your back against a wall, feet slightly forward.",
+      "Keep heels down and lift toes toward your shins.",
+      "Lower slowly with control."
+    ],
+    "dosage": "2-3 sets of 12-20 reps",
+    "cautions": "Stop if sharp pain in the shin.",
+    "source": "Coach-curated running exercise KB"
+  },
+  {
+    "id": "shin_calf_raises",
+    "title": "Calf Raises",
+    "body_area": "shin",
+    "goal": "strength",
+    "when": "off-day",
+    "instructions": [
+      "Stand tall holding support if needed.",
+      "Rise onto toes, pause briefly, lower slowly."
+    ],
+    "dosage": "2-3 sets of 10-15 reps",
+    "cautions": "Use controlled tempo; stop if sharp pain.",
+    "source": "Coach-curated running exercise KB"
+  },
+  {
+    "id": "knee_leg_swings",
+    "title": "Leg Swings",
+    "body_area": "knee",
+    "goal": "warmup",
+    "when": "pre-run",
+    "instructions": [
+      "Hold support and stand tall.",
+      "Swing one leg forward and back in a comfortable range.",
+      "Repeat on both sides."
+    ],
+    "dosage": "10-15 swings each side",
+    "cautions": "Do not force range of motion.",
+    "source": "Coach-curated running exercise KB"
+  },
+  {
+    "id": "knee_split_squat_iso",
+    "title": "Split Squat Isometric Hold",
+    "body_area": "knee",
+    "goal": "strength",
+    "when": "off-day",
+    "instructions": [
+      "Step into a split stance.",
+      "Lower into a shallow split squat and hold.",
+      "Keep front knee tracking over toes comfortably."
+    ],
+    "dosage": "2-3 holds of 20-30 sec per side",
+    "cautions": "Reduce depth if pain increases.",
+    "source": "Coach-curated running exercise KB"
+  },
+  {
+    "id": "knee_glute_bridge",
+    "title": "Glute Bridge",
+    "body_area": "knee",
+    "goal": "strength",
+    "when": "off-day",
+    "instructions": [
+      "Lie on your back with knees bent.",
+      "Squeeze glutes and lift hips.",
+      "Pause and lower slowly."
+    ],
+    "dosage": "2-3 sets of 8-12 reps",
+    "cautions": "Avoid low back arching.",
+    "source": "Coach-curated running exercise KB"
+  },
+  {
+    "id": "achilles_calf_stretch",
+    "title": "Wall Calf Stretch",
+    "body_area": "achilles",
+    "goal": "stretch",
+    "when": "post-run",
+    "instructions": [
+      "Hands on wall, one foot back.",
+      "Keep back heel down and knee straight.",
+      "Lean forward until gentle calf/Achilles stretch."
+    ],
+    "dosage": "20-30 sec x 2 per side",
+    "cautions": "Do not bounce. Stop if sharp pain.",
+    "source": "Coach-curated running exercise KB"
+  },
+  {
+    "id": "achilles_soleus_stretch",
+    "title": "Bent-Knee Calf Stretch (Soleus Bias)",
+    "body_area": "achilles",
+    "goal": "stretch",
+    "when": "post-run",
+    "instructions": [
+      "Hands on wall with one foot back.",
+      "Bend the back knee slightly while keeping heel down.",
+      "Feel stretch lower in calf/Achilles region."
+    ],
+    "dosage": "20-30 sec x 2 per side",
+    "cautions": "Keep stretch gentle.",
+    "source": "Coach-curated running exercise KB"
+  },
+  {
+    "id": "achilles_eccentric_heel_drop",
+    "title": "Eccentric Heel Drop",
+    "body_area": "achilles",
+    "goal": "strength",
+    "when": "off-day",
+    "instructions": [
+      "Stand on a step on the balls of both feet.",
+      "Rise with both feet.",
+      "Lower slowly on the affected side."
+    ],
+    "dosage": "2-3 sets of 6-10 slow reps",
+    "cautions": "Mild discomfort may be okay; stop for sharp pain.",
+    "source": "Coach-curated running exercise KB"
+  },
+  {
+    "id": "ankle_rocks",
+    "title": "Ankle Rocks (knee-to-wall)",
+    "body_area": "ankle",
+    "goal": "mobility",
+    "when": "pre-run",
+    "instructions": [
+      "Face a wall with one foot forward.",
+      "Drive knee toward wall while keeping heel down.",
+      "Move in and out of a gentle range."
+    ],
+    "dosage": "1 minute per side",
+    "cautions": "Keep heel planted; avoid forcing range.",
+    "source": "Coach-curated running exercise KB"
+  },
+  {
+    "id": "ankle_circles",
+    "title": "Ankle Circles",
+    "body_area": "ankle",
+    "goal": "warmup",
+    "when": "pre-run",
+    "instructions": [
+      "Lift one foot slightly off the ground.",
+      "Make slow circles at the ankle in both directions."
+    ],
+    "dosage": "10 circles each direction per side",
+    "cautions": "Use smooth controlled motion.",
+    "source": "Coach-curated running exercise KB"
+  },
+  {
+    "id": "calf_isometric_hold",
+    "title": "Calf Raise Isometric Hold",
+    "body_area": "calf",
+    "goal": "strength",
+    "when": "off-day",
+    "instructions": [
+      "Rise onto the balls of your feet.",
+      "Hold near the top with steady balance.",
+      "Lower slowly."
+    ],
+    "dosage": "2-3 holds of 20-30 sec",
+    "cautions": "Use support if balance is limited.",
+    "source": "Coach-curated running exercise KB"
+  },
+  {
+    "id": "plantar_foot_roll",
+    "title": "Foot Roll (ball massage)",
+    "body_area": "foot",
+    "goal": "mobility",
+    "when": "post-run",
+    "instructions": [
+      "Place a ball under the foot arch.",
+      "Roll gently from heel to forefoot."
+    ],
+    "dosage": "30-60 sec per foot",
+    "cautions": "Avoid aggressive pressure if very irritable.",
+    "source": "Coach-curated running exercise KB"
+  },
+  {
+    "id": "foot_toe_yoga",
+    "title": "Toe Yoga",
+    "body_area": "foot",
+    "goal": "strength",
+    "when": "off-day",
+    "instructions": [
+      "Stand barefoot or sit tall.",
+      "Lift big toe while others stay down, then switch.",
+      "Move slowly and focus on control."
+    ],
+    "dosage": "1-2 sets of 8-10 reps each pattern",
+    "cautions": "Go slow; coordination drill.",
+    "source": "Coach-curated running exercise KB"
+  },
+  {
+    "id": "hip_glute_bridge",
+    "title": "Glute Bridge",
+    "body_area": "hip",
+    "goal": "strength",
+    "when": "off-day",
+    "instructions": [
+      "Lie on your back with knees bent.",
+      "Lift hips by squeezing glutes.",
+      "Pause, then lower slowly."
+    ],
+    "dosage": "2-3 sets of 8-12 reps",
+    "cautions": "Avoid cranking through low back.",
+    "source": "Coach-curated running exercise KB"
+  },
+  {
+    "id": "hip_lateral_band_walk",
+    "title": "Lateral Band Walk",
+    "body_area": "hip",
+    "goal": "strength",
+    "when": "pre-run",
+    "instructions": [
+      "Place a light band around ankles or above knees.",
+      "Slightly bend knees and step sideways with control.",
+      "Keep toes forward and hips level."
+    ],
+    "dosage": "2 sets of 8-12 steps each direction",
+    "cautions": "Use light band first.",
+    "source": "Coach-curated running exercise KB"
+  },
+  {
+    "id": "hamstring_dynamic_sweep",
+    "title": "Dynamic Hamstring Sweep",
+    "body_area": "hamstring",
+    "goal": "warmup",
+    "when": "pre-run",
+    "instructions": [
+      "Step one heel forward with toes up.",
+      "Sweep hands toward the foot as hips hinge slightly.",
+      "Return and switch sides."
+    ],
+    "dosage": "8-10 reps per side",
+    "cautions": "Move gently; no bouncing.",
+    "source": "Coach-curated running exercise KB"
+  },
+  {
+    "id": "lowback_cat_cow",
+    "title": "Cat-Cow",
+    "body_area": "low_back",
+    "goal": "mobility",
+    "when": "pre-run",
+    "instructions": [
+      "Start on hands and knees.",
+      "Alternate gentle arching and rounding of the spine.",
+      "Move slowly with breathing."
+    ],
+    "dosage": "6-10 slow reps",
+    "cautions": "Stay in a comfortable range.",
+    "source": "Coach-curated running exercise KB"
+  }
+]

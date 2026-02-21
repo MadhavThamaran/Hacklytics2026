@@ -46,6 +46,22 @@ export default function ChatCard() {
         <span className="badge">MVP Skeleton</span>
       </div>
 
+      <div
+        style={{
+          marginTop: 10,
+          marginBottom: 10,
+          padding: "10px 12px",
+          borderRadius: 8,
+          border: "1px solid #f0c36d",
+          background: "#fff7e6",
+          color: "#7a4b00",
+          fontSize: 14
+        }}
+      >
+        <strong>Not medical advice:</strong> This coach provides general running exercise guidance only.
+        If pain is severe, sharp, worsening, or persistent, please see a qualified clinician.
+      </div>
+
       <div className="chat">
         {msgs.map((m, i) => (
           <p key={i} className="msg">

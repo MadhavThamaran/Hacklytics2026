@@ -1,5 +1,6 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from .rag.coach import run_rag_chat
 
 from .schemas import (
     HealthResponse, UploadResponse, ScoreResult, MetricScore,
@@ -81,26 +82,13 @@ def results(job_id: str):
 
 
 @app.post("/chat", response_model=ChatResponse)
-def chat(req: ChatRequest):
-    # Mock response (replace with RAG over Actian VectorAI DB)
-    msg = req.message.strip().lower()
-
-    if "shin" in msg:
-        response = (
-            "For shin discomfort, try: (1) 5–8 min easy walk/jog warm-up, "
-            "(2) calf raises 2×12, (3) tibialis raises 2×12, (4) gentle calf stretch 2×30s. "
-            "If pain is sharp or persists, consider seeing a professional."
-        )
-        cites = [
-            ChatCitation(title="Mock KB: Tibialis Raises", note="Targets front-of-shin strength; start light."),
-            ChatCitation(title="Mock KB: Calf Raises", note="Helps calf/ankle capacity; slow tempo."),
-        ]
-        return ChatResponse(message=response, citations=cites)
-
+async def chat(req: ChatRequest):
+    result = await run_rag_chat(req.message)
+    cites = [
+        ChatCitation(title=c.get("title", "Source"), note=c.get("note", ""))
+        for c in result.get("citations", [])
+    ]
     return ChatResponse(
-        message=(
-            "Tell me where it hurts (e.g., left knee, right Achilles, shin) and whether you want warm-up, stretching, or strengthening. "
-            "I can suggest a short routine (general guidance, not medical advice)."
-        ),
-        citations=[],
+        message=result.get("message", "Sorry, I could not generate a response right now."),
+        citations=cites,
     )

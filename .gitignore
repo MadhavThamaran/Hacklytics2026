@@ -1,14 +1,29 @@
 # Node
-**/node_modules/
-**/.next/
-**/out/
+node_modules/
+.next/
+out/
 
 # Python
-**/.venv/
-**/__pycache__/
-**/*.pyc
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+.venv312/
+apps/api/.venv/
+apps/api/.venv312/
 
-# Env
+# Env files / secrets
 .env
-.env.local
-.env.*.local
+.env.*
+!.env.example
+
+# Temp / local clones
+tmp/
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/
+
+# Uploaded/local artifacts
+uploads/
