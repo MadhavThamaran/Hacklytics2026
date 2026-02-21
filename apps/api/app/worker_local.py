@@ -58,11 +58,11 @@ def process_video(job_id: str, input_path: str):
             fallback = False
             error_msg = None
         else:
-            # Graceful fallback if pose detection is weak
-            overall_score = 60
+            # Invalid / non-analyzable clip fallback (no reliable pose / no runner)
+            overall_score = 0
             tips_arr = [
                 "We could not confidently analyze pose landmarks in this video.",
-                "Please upload a side-view clip with your full body visible and better lighting.",
+                "Please make sure the video is of someone running (preferably side-view) with the full body visible.",
             ]
             subscores = {}
             metrics_payload = raw.get("raw_metrics", {})

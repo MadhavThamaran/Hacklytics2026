@@ -73,11 +73,17 @@ async def upload_video(file: UploadFile = File(...)):
     worker_py = os.path.join(os.path.dirname(__file__), "worker_local.py")
     input_path = save_path
 
+    # Prefer dedicated CV worker venv to avoid protobuf conflicts with chat/cortex
+    cv_python = os.path.abspath(
+        os.path.join(os.path.dirname(__file__), "..", ".venv_cv", "Scripts", "python.exe")
+    )
+    python_cmd = cv_python if os.path.exists(cv_python) else sys.executable
+
     try:
         subprocess.Popen(
-    [sys.executable, worker_py, "--job_id", job_id, "--input_path", input_path],
-    cwd=os.path.dirname(__file__),
-)
+            [python_cmd, worker_py, "--job_id", job_id, "--input_path", input_path],
+            cwd=os.path.dirname(__file__),
+        )
     except Exception:
         # If spawn fails, write status error locally and to Databricks
         set_job_status(job_id, "error", {"error": "worker spawn failed"})

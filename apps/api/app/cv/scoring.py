@@ -24,7 +24,92 @@ def _score_range(value, ideal_low, ideal_high, bad_low, bad_high) -> int:
     return 60
 
 
+def _no_runner_result(raw: Dict[str, Any], message: str) -> Dict[str, Any]:
+    pose_frames = raw.get("pose_frames")
+    frames_used = raw.get("frames_used")
+
+    try:
+        pose_frames_i = int(pose_frames) if pose_frames is not None else 0
+    except Exception:
+        pose_frames_i = 0
+
+    try:
+        frames_used_i = int(frames_used) if frames_used is not None else 0
+    except Exception:
+        frames_used_i = 0
+
+    return {
+        "score": 0,
+        "subscores": {
+            "posture": 0,
+            "stride": 0,
+            "stability": 0,
+            "cadence_proxy": 0,
+        },
+        "tips": [
+            "We could not confidently analyze running form in this video.",
+            "Please make sure the video is of someone running (preferably side-view) with the full body visible.",
+        ],
+        "warnings": [
+            message,
+            "Best results come from side-view videos with full body visible.",
+        ],
+        "metrics": {
+            "avg_torso_lean_deg": raw.get("avg_torso_lean_deg"),
+            "overstride_ratio": raw.get("overstride_ratio"),
+            "knee_drive_ratio": raw.get("knee_drive_ratio"),
+            "vertical_oscillation_norm": raw.get("vertical_oscillation_norm"),
+            "cadence_spm_est": raw.get("cadence_spm_est"),
+            "pose_frames": pose_frames_i,
+            "frames_used": frames_used_i,
+        },
+    }
+
+
 def score_running_form(raw: Dict[str, Any]) -> Dict[str, Any]:
+    pose_frames = raw.get("pose_frames")
+    frames_used = raw.get("frames_used")
+
+    try:
+        pose_frames_i = int(pose_frames) if pose_frames is not None else 0
+    except Exception:
+        pose_frames_i = 0
+
+    try:
+        frames_used_i = int(frames_used) if frames_used is not None else 0
+    except Exception:
+        frames_used_i = 0
+
+    # 1) Hard fail: no pose detected
+    if pose_frames_i == 0 or frames_used_i == 0:
+        return _no_runner_result(
+            raw,
+            "No running subject detected or pose landmarks were insufficient for analysis.",
+        )
+
+    # 2) Reliability fail: too few pose frames
+    if pose_frames_i < 15:
+        return _no_runner_result(
+            raw,
+            "Insufficient pose landmarks for reliable running-form analysis.",
+        )
+
+    # 3) New guard: person may be visible, but no usable running metrics were extracted
+    core_metrics = [
+        raw.get("avg_torso_lean_deg"),
+        raw.get("overstride_ratio"),
+        raw.get("vertical_oscillation_norm"),
+        raw.get("cadence_spm_est"),
+    ]
+    present_core_metrics = sum(v is not None for v in core_metrics)
+
+    # If almost nothing is available, treat as invalid/non-running clip
+    if present_core_metrics <= 1:
+        return _no_runner_result(
+            raw,
+            "A person may be visible, but the video does not appear to contain enough running motion for analysis.",
+        )
+
     posture = _score_range(
         raw.get("avg_torso_lean_deg"), ideal_low=5, ideal_high=15, bad_low=0, bad_high=25
     )
@@ -96,7 +181,7 @@ def score_running_form(raw: Dict[str, Any]) -> Dict[str, Any]:
             "knee_drive_ratio": raw.get("knee_drive_ratio"),
             "vertical_oscillation_norm": raw.get("vertical_oscillation_norm"),
             "cadence_spm_est": raw.get("cadence_spm_est"),
-            "pose_frames": raw.get("pose_frames"),
-            "frames_used": raw.get("frames_used"),
+            "pose_frames": pose_frames_i,
+            "frames_used": frames_used_i,
         },
     }
