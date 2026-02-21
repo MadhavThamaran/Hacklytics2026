@@ -4,8 +4,8 @@ import "./globals.css";
 
 export default function Page() {
   return (
-    <main className="min-h-screen bg-gradient-to-b from-zinc-950 via-zinc-900 to-zinc-950 text-zinc-100">
-      <div className="max-w-6xl mx-auto px-4 py-10">
+    <main className="min-h-screen animated-bg text-zinc-100">
+      <div className="max-w-7xl mx-auto px-6 py-8">
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-4xl font-semibold mb-2">AI Run Coach</h1>
@@ -13,7 +13,7 @@ export default function Page() {
         </div>
 
         {/* Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
           <UploadCard />
           <ChatCard />
         </div>

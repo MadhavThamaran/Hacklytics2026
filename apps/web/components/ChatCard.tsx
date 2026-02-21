@@ -2,6 +2,7 @@
 
 import React from "react";
 import { sendChat } from "@/lib/api";
+import ExpandableCard from './ExpandableCard'
 
 type ChatMsg = { role: "user" | "assistant"; text: string };
 
@@ -47,7 +48,8 @@ export default function ChatCard() {
   };
 
   return (
-    <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur shadow-xl p-6">
+    <ExpandableCard>
+      <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur shadow-xl p-6">
       {/* Card Header */}
       <div className="mb-6">
         <div className="flex items-center gap-3 mb-2">
@@ -59,7 +61,7 @@ export default function ChatCard() {
 
       {/* Disclaimer Banner */}
       <div className="rounded-xl bg-amber-500/10 border border-amber-400/20 text-amber-100 p-4 mb-6 text-sm">
-        <strong>Not medical advice!:</strong> This coach provides general running exercise guidance only.
+        <strong>Not medical advice:</strong> This coach provides general running exercise guidance only.
         If pain is severe, sharp, worsening, or persistent, please see a qualified clinician.
       </div>
 
@@ -130,11 +132,12 @@ export default function ChatCard() {
         </button>
       </div>
 
-      {error && (
-        <div className="rounded-xl bg-red-500/10 border border-red-400/20 text-red-100 p-3 mt-4 text-sm">
-          {error}
-        </div>
-      )}
-    </div>
+        {error && (
+          <div className="rounded-xl bg-red-500/10 border border-red-400/20 text-red-100 p-3 mt-4 text-sm">
+            {error}
+          </div>
+        )}
+      </div>
+    </ExpandableCard>
   );
 }

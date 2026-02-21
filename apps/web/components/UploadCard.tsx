@@ -2,7 +2,9 @@
 
 import React from "react";
 import { uploadVideo, fetchResults } from "@/lib/api";
-import type { ScoreResult } from "@/lib/types";
+import type { ScoreResult, MetricScore } from "@/lib/types";
+
+import ExpandableCard from './ExpandableCard'
 
 export default function UploadCard() {
   const [file, setFile] = React.useState<File | null>(null);
@@ -51,7 +53,7 @@ export default function UploadCard() {
 
   // Mock data for display when no real results
   const mockOverallScore = 82;
-  const mockMetrics = [
+  const mockMetrics: MetricScore[] = [
     { name: "Stride Length", score: 30, status: "Needs Work", color: "bg-amber-400" },
     { name: "Posture", score: 70, status: "Good", color: "bg-emerald-400" },
     { name: "Cadence", score: 95, status: "Excellent", color: "bg-emerald-300" },
@@ -64,7 +66,8 @@ export default function UploadCard() {
     : mockMetrics;
 
   return (
-    <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur shadow-xl p-6">
+    <ExpandableCard className="">
+      <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur shadow-xl p-6">
       {/* Card Header */}
       <div className="mb-6">
         <div className="flex items-center gap-3 mb-2">
@@ -120,12 +123,12 @@ export default function UploadCard() {
         <div className="flex justify-center mb-8">
           <div className="relative w-32 h-32">
             <div
-              className="absolute inset-0 rounded-full"
+              className="absolute inset-0 rounded-full ring-fill transition-all"
               style={{
-                background: `conic-gradient(from 0deg, rgb(16, 185, 129) 0deg, rgb(16, 185, 129) ${displayScore * 3.6}deg, rgba(255, 255, 255, 0.1) ${displayScore * 3.6}deg)`,
+                background: `conic-gradient(from 0deg, rgb(16, 185, 129) 0deg, rgb(16, 185, 129) ${displayScore * 3.6}deg, rgba(255, 255, 255, 0.06) ${displayScore * 3.6}deg)`,
               }}
             />
-            <div className="absolute inset-1 rounded-full bg-zinc-950 flex items-center justify-center">
+            <div className={`absolute inset-1 rounded-full bg-zinc-950 flex items-center justify-center ${result ? 'pulse' : ''}`}>
               <div className="text-center">
                 <div className="text-3xl font-bold text-emerald-400">{displayScore}</div>
                 <div className="text-xs text-zinc-500">/100</div>
@@ -155,7 +158,7 @@ export default function UploadCard() {
                 </div>
                 <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
                   <div
-                    className={`h-full ${metric.color || "bg-emerald-400"} transition-all`}
+                    className={`h-full ${metric.color || "bg-emerald-400"} transition-all bar-fill`}
                     style={{ width: `${scorePercent}%` }}
                   />
                 </div>
@@ -178,11 +181,10 @@ export default function UploadCard() {
         )}
       </div>
 
-      {jobId && (
-        <div className="mt-4 text-xs text-zinc-500">
-          Job ID: {jobId}
-        </div>
-      )}
-    </div>
+        {jobId && (
+          <div className="mt-4 text-xs text-zinc-500">Job ID: {jobId}</div>
+        )}
+      </div>
+    </ExpandableCard>
   );
 }

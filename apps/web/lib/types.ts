@@ -7,6 +7,8 @@ export type MetricScore = {
   score: number;
   value?: number | null;
   unit?: string | null;
+  status?: string | null;
+  color?: string | null;
 };
 
 export type ScoreResult = {
