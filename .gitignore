@@ -25,6 +25,7 @@ __pycache__/
 .venv312/
 apps/api/.venv/
 apps/api/.venv312/
+apps/api/.venv_cv/
 
 # Env files / secrets
 .env
