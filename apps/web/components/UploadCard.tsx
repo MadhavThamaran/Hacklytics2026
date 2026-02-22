@@ -17,7 +17,7 @@ export default function UploadCard() {
   const fileInputRef = React.useRef<HTMLInputElement>(null);
 
   async function pollResultsUntilDone(id: string) {
-    const maxAttempts = 30; // ~30 seconds
+    const maxAttempts = 60; // ~60 seconds
     for (let attempt = 0; attempt < maxAttempts; attempt++) {
       const res = await fetchResults(id);
       setResult(res);
