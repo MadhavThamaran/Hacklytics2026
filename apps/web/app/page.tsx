@@ -1,3 +1,5 @@
+"use client";
+
 import UploadCard from "@/components/UploadCard";
 import ChatCard from "@/components/ChatCard";
 import "./globals.css";
@@ -6,10 +8,13 @@ export default function Page() {
   return (
     <main className="min-h-screen animated-bg text-zinc-100">
       <div className="max-w-7xl mx-auto px-6 py-8">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-semibold mb-2">AI Run Coach</h1>
-          <p className="text-zinc-400">AI-powered gait analysis & injury-aware training feedback</p>
+        {/* Banner Logo (no box) */}
+        <div className="mb-12 flex justify-center">
+          <img
+            src="/gaitkeepr-banner.png"
+            alt="GaitKeepr"
+            className="w-full max-w-5xl h-auto object-contain px-6"
+          />
         </div>
 
         {/* Grid */}
